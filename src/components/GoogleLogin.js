@@ -1,9 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
 
 class GoogleLogin extends React.Component {
+  state = { user: null };
   googleLogin = async () => {
     try {
       // Add any configuration settings here:
@@ -26,6 +27,39 @@ class GoogleLogin extends React.Component {
       console.error(e);
     }
   };
+  _handleSignOut = () => {
+    firebase.auth().signOut();
+  };
+  componentDidMount() {
+    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user: user.toJSON() });
+      } else {
+        // User has been signed out, reset the state
+        this.setState({
+          user: null,
+          message: '',
+          codeInput: '',
+          phoneNumber: '+91',
+          confirmResult: null
+        });
+      }
+    });
+    this.unsubscribeLinks = firebase.links().onLink(url => {
+      console.log(url);
+    });
+    firebase
+      .links()
+      .getInitialLink()
+      .then(url => {
+        console.log(url)
+      });
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) this.unsubscribe();
+    if (this.unsubscribeLinks) this.unsubscribeLinks();
+  }
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
@@ -35,6 +69,9 @@ class GoogleLogin extends React.Component {
           color={GoogleSigninButton.Color.Light}
           onPress={this.googleLogin}
         />
+        <Text>{JSON.stringify(this.state.user)}</Text>
+        <Button title="email link" onPress={this._handleEmailLoginLink} />
+        <Button title="sign out" onPress={this._handleSignOut} />
       </View>
     );
   }

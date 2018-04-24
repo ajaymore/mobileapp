@@ -98,13 +98,13 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "in.ajaymore.mobileapp"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         ndk {
@@ -150,6 +150,10 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:27.1.1"
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+    
     implementation(project(':react-native-google-signin')){
         exclude group: "com.google.android.gms"
     }
@@ -157,9 +161,6 @@ dependencies {
         transitive = false
     }
     implementation project(':react-native-vector-icons')
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:23.0.1"
-    implementation "com.facebook.react:react-native:+"  // From node_modules
 
     // Google signin
     implementation 'com.google.android.gms:play-services-auth:12.0.1'

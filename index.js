@@ -23,7 +23,7 @@ const Loading = props => (
 const Mount = props => (
   <Provider store={store}>
     <PersistGate loading={<Loading />} persistor={persistor}>
-      <FirebaseApp />
+      <GoogleLogin />
     </PersistGate>
   </Provider>
 );
