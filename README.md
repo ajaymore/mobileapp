@@ -9,6 +9,7 @@ android/app/src/main/java/com/reactNativeSampleApp/MainActivity.java
 android/app/src/main/java/com/reactNativeSampleApp/MainApplication.java
 android/app/src/main/AndroidManifest.xml
 android/app/build.gradle
+android/app/src/main/res/values/strings.xml
 ```
 
 * react-native run-android
